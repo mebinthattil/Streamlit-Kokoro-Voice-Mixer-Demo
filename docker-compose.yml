@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  kokoro-fastapi:
+    image: ghcr.io/remsky/kokoro-fastapi-cpu:latest
+    container_name: kokoro-api
+    ports:
+      - "8880:8880"
+    restart: unless-stopped 
+  streamlit-app:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    container_name: streamlit-webapp
+    ports:
+      - "8501:8501" 
+    depends_on:
+      - kokoro-fastapi 
+    restart: unless-stopped 
